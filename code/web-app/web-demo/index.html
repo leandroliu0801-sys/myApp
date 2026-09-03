@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🐶 恋爱萨摩耶</title>
+  <link rel="stylesheet" href="styles/theme.css">
+  <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ===== 底部 Tab 导航 ===== -->
+    <div class="tab-bar">
+      <div class="tab-item active" data-tab="index" onclick="switchTab('index')">
+        <span class="tab-icon">🏠</span>
+        <span class="tab-label">首页</span>
+      </div>
+      <div class="tab-item" data-tab="tasks" onclick="switchTab('tasks')">
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">任务</span>
+      </div>
+      <div class="tab-item" data-tab="shop" onclick="switchTab('shop')">
+        <span class="tab-icon">🛒</span>
+        <span class="tab-label">商城</span>
+      </div>
+      <div class="tab-item" data-tab="mine" onclick="switchTab('mine')">
+        <span class="tab-icon">👤</span>
+        <span class="tab-label">我的</span>
+      </div>
+    </div>
+
+    <!-- ===== 页面容器 ===== -->
+    <div class="page-container">
+      <!-- ====== 首页 ====== -->
+      <div id="page-index" class="page active">
+        <!-- 顶部恋爱天数 -->
+        <div class="love-header">
+          <div class="love-header-bg"></div>
+          <div class="love-days">
+            <span class="days-number" id="loveDays">0</span>
+            <span class="days-label">天</span>
+          </div>
+          <span class="love-text">💕 在一起的第 <span id="loveDaysText">0</span> 天</span>
+        </div>
+
+        <!-- 萨摩耶卡片 -->
+        <div class="dog-section">
+          <div class="dog-card">
+            <div class="dog-header">
+              <span class="dog-level" id="dogLevel">Lv.1</span>
+              <span class="dog-name" id="dogName">小萨</span>
+              <span class="dog-expression" id="dogExpression">😊</span>
+            </div>
+
+            <div class="dog-image-wrapper">
+              <div class="dog-image" id="dogImage">🐶</div>
+              <div class="dog-status-tips" id="statusTips"></div>
+            </div>
+
+            <!-- 经验条 -->
+            <div class="exp-bar">
+              <div class="exp-bar-bg">
+                <div class="exp-bar-fill" id="expFill" style="width: 0%"></div>
+              </div>
+              <span class="exp-text" id="expText">0/100</span>
+            </div>
+
+            <!-- 属性条 -->
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-icon">🍖</span>
+                <div class="stat-bar"><div class="stat-fill hunger" id="hungerFill" style="width: 80%"></div></div>
+                <span class="stat-value" id="hungerValue">80%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-icon">🧹</span>
+                <div class="stat-bar"><div class="stat-fill cleanliness" id="cleanFill" style="width: 80%"></div></div>
+                <span class="stat-value" id="cleanValue">80%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-icon">😊</span>
+                <div class="stat-bar"><div class="stat-fill mood" id="moodFill" style="width: 80%"></div></div>
+                <span class="stat-value" id="moodValue">80%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-icon">🚶</span>
+                <div class="stat-bar"><div class="stat-fill energy" id="energyFill" style="width: 50%"></div></div>
+                <span class="stat-value" id="energyValue">50%</span>
+              </div>
+            </div>
+
+            <!-- 互动按钮 -->
+            <div class="interact-buttons">
+              <button class="interact-btn" onclick="onFeed()" id="btnFeed">
+                <span class="btn-icon">🍗</span>
+                <span class="btn-label">喂食</span>
+              </button>
+              <button class="interact-btn" onclick="onBath()" id="btnBath">
+                <span class="btn-icon">🛁</span>
+                <span class="btn-label">洗澡</span>
+              </button>
+              <button class="interact-btn" onclick="onPlay()" id="btnPlay">
+                <span class="btn-icon">🎾</span>
+                <span class="btn-label">玩耍</span>
+              </button>
+              <button class="interact-btn" onclick="onWalk()" id="btnWalk">
+                <span class="btn-icon">🚶</span>
+                <span class="btn-label">遛狗</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 积分看板 -->
+        <div class="score-section">
+          <div class="score-card">
+            <div class="score-item">
+              <span class="score-label">我的积分</span>
+              <span class="score-value" id="myScore">0</span>
+            </div>
+            <div class="score-divider"></div>
+            <div class="score-item">
+              <span class="score-label">TA的积分</span>
+              <span class="score-value partner" id="partnerScore">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 快捷入口 -->
+        <div class="quick-entries">
+          <div class="entries-grid">
+            <div class="entry-item" onclick="switchTab('tasks')">
+              <span class="entry-icon">📋</span>
+              <span class="entry-name">任务</span>
+            </div>
+            <div class="entry-item" onclick="switchTab('shop')">
+              <span class="entry-icon">🛒</span>
+              <span class="entry-name">商城</span>
+            </div>
+            <div class="entry-item" onclick="showToast('功能开发中~')">
+              <span class="entry-icon">🤔</span>
+              <span class="entry-name">默契问答</span>
+            </div>
+            <div class="entry-item" onclick="showToast('功能开发中~')">
+              <span class="entry-icon">📝</span>
+              <span class="entry-name">心情日记</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== 任务页 ====== -->
+      <div id="page-tasks" class="page">
+        <div class="page-title">📋 任务</div>
+        
+        <div class="tabs">
+          <div class="tab-item active" data-tab="pending" onclick="switchTaskTab('pending', this)">待领取</div>
+          <div class="tab-item" data-tab="ongoing" onclick="switchTaskTab('ongoing', this)">进行中</div>
+          <div class="tab-item" data-tab="completed" onclick="switchTaskTab('completed', this)">已完成</div>
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+
+        <!-- 悬浮发布按钮 -->
+        <div class="fab-btn" onclick="openPublishModal()">＋</div>
+      </div>
+
+      <!-- ====== 商城页 ====== -->
+      <div id="page-shop" class="page">
+        <div class="page-title">🛒 商城</div>
+
+        <div class="balance-bar">
+          <span class="balance-label">💰 我的积分</span>
+          <span class="balance-value" id="shopScore">0</span>
+        </div>
+
+        <div class="tabs">
+          <div class="tab-item active" data-tab="shop" onclick="switchShopTab('shop', this)">🛒 商城</div>
+          <div class="tab-item" data-tab="warehouse" onclick="switchShopTab('warehouse', this)">📦 仓库</div>
+        </div>
+
+        <div class="product-list" id="productList"></div>
+
+        <div class="fab-btn" onclick="openShopPublishModal()">＋</div>
+      </div>
+
+      <!-- ====== 我的页 ====== -->
+      <div id="page-mine" class="page">
+        <div class="page-title">👤 我的</div>
+
+        <div class="user-card">
+          <div class="user-info">
+            <div class="avatar">😊</div>
+            <span class="user-name">我</span>
+            <span class="user-score">🏆 0 积分</span>
+          </div>
+          <div class="love-connect">
+            <span class="heart-icon">❤️</span>
+            <span class="bind-status">未绑定</span>
+          </div>
+          <div class="user-info">
+            <div class="avatar">😊</div>
+            <span class="user-name">TA</span>
+            <span class="user-score">🏆 0 积分</span>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-item" onclick="showToast('功能开发中~')">
+            <span class="menu-icon">🤔</span>
+            <span class="menu-name">默契问答</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中~')">
+            <span class="menu-icon">📝</span>
+            <span class="menu-name">心情日记</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中~')">
+            <span class="menu-icon">📅</span>
+            <span class="menu-name">纪念日</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中~')">
+            <span class="menu-icon">🐶</span>
+            <span class="menu-name">狗狗改名</span>
+            <span class="menu-arrow">›</span>
+          </div>
+          <div class="menu-item" onclick="showToast('功能开发中~')">
+            <span class="menu-icon">🔗</span>
+            <span class="menu-name">情侣绑定</span>
+            <span class="menu-badge warn">未绑定</span>
+            <span class="menu-arrow">›</span>
+          </div>
+        </div>
+
+        <div class="footer-info">
+          <span>🐶 恋爱萨摩耶 v1.0.0</span>
+          <span>Made with ❤️ for you</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Toast 提示 ===== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ===== 发布任务弹窗 ===== -->
+    <div class="modal-mask" id="taskModalMask" onclick="closePublishModal()"></div>
+    <div class="modal-content" id="taskModal">
+      <div class="modal-header">
+        <span class="modal-title">📋 发布新任务</span>
+        <span class="modal-close" onclick="closePublishModal()">✕</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">任务标题 *</label>
+          <input class="pink-input" id="taskTitleInput" placeholder="例如：洗碗、说早安..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">任务描述</label>
+          <input class="pink-input" id="taskDescInput" placeholder="描述一下任务内容..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">任务类型</label>
+          <div class="type-selector">
+            <div class="type-option selected" data-type="暖心" onclick="selectTaskType(this)">💕 暖心</div>
+            <div class="type-option" data-type="家务" onclick="selectTaskType(this)">🏠 家务</div>
+            <div class="type-option" data-type="浪漫" onclick="selectTaskType(this)">🌹 浪漫</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">积分奖励：<span id="taskScoreLabel">20</span>分</label>
+          <input type="range" class="pink-slider" id="taskScoreSlider" min="5" max="100" step="5" value="20" oninput="updateTaskScore(this.value)" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pink-btn" onclick="publishTask()">📋 发布任务</button>
+      </div>
+    </div>
+
+    <!-- ===== 上架商品弹窗 ===== -->
+    <div class="modal-mask" id="shopModalMask" onclick="closeShopPublishModal()"></div>
+    <div class="modal-content" id="shopModal">
+      <div class="modal-header">
+        <span class="modal-title">🛒 上架新商品</span>
+        <span class="modal-close" onclick="closeShopPublishModal()">✕</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">商品名称 *</label>
+          <input class="pink-input" id="productNameInput" placeholder="例如：免做家务券..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">商品描述</label>
+          <input class="pink-input" id="productDescInput" placeholder="描述一下商品内容..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">选择图标</label>
+          <div class="icon-selector" id="iconSelector">
+            <div class="icon-option selected" onclick="selectIcon(this)">🧹</div>
+            <div class="icon-option" onclick="selectIcon(this)">🧋</div>
+            <div class="icon-option" onclick="selectIcon(this)">💆</div>
+            <div class="icon-option" onclick="selectIcon(this)">🤗</div>
+            <div class="icon-option" onclick="selectIcon(this)">🎬</div>
+            <div class="icon-option" onclick="selectIcon(this)">🎮</div>
+            <div class="icon-option" onclick="selectIcon(this)">☕</div>
+            <div class="icon-option" onclick="selectIcon(this)">🍜</div>
+            <div class="icon-option" onclick="selectIcon(this)">🎁</div>
+            <div class="icon-option" onclick="selectIcon(this)">💌</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">价格：<span id="productPriceLabel">50</span> 积分</label>
+          <input type="range" class="pink-slider" id="productPriceSlider" min="10" max="500" step="10" value="50" oninput="updateProductPrice(this.value)" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="pink-btn" onclick="publishProduct()">🛒 上架商品</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/dog.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/shop.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
